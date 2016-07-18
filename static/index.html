@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+		<style>
+			body {
+				text-align: center;
+				font-family: "Roboto", sans-serif;
+			}
+
+			.namanyay-search-btn {
+				background:#0099ff;
+				color:white;
+				padding:10px 20px;
+				border-radius:0 5px 5px 0;
+				-moz-border-radius:0 5px 5px 0;
+				-webkit-border-radius:0 5px 5px 0;
+				-o-border-radius:0 5px 5px 0;
+				border:0 none;
+				font-weight:bold;
+			}
+
+			.namanyay-search-box {
+				background: #eee;
+				padding:10px;
+				border-radius:5px 0 0 5px;
+				-moz-border-radius:5px 0 0 5px;
+				-webkit-border-radius:5px 0 0 5px;
+				-o-border-radius:5px 0 0 5px;
+				border:0 none;
+				width:160px;
+			}
+
+			.albums img {
+				width: 300px;
+			}
+		</style>
+
+	</head>
+	<body>
+
+		<input class="namanyay-search-box" id="search" size="40" type="text" placeholder="Search"/>
+		<input class="namanyay-search-btn" value="Go" type="submit"/>
+
+		<div class="albums"></div>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+		<script>
+		function search() {
+			var value = $("#search").val();
+
+			$.ajax({
+				url: "/search",
+				data: {q: value},
+				success: function(res) {
+					const $albums = $("<div></div>");
+
+					JSON.parse(res).forEach(function(album) {
+						const $img = $("<img>");
+						$img.attr("src", album.image);
+						$albums.append($img);
+					});
+
+					$(".albums").html($albums.html());
+				}
+			});
+		}
+
+		$("#search").keyup(search);
+		$(".namanyay-search-btn").click(search);
+		</script>
+
+	</body>
+</html>
